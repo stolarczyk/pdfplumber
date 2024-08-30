@@ -13,6 +13,7 @@ from typing import (
     Union,
 )
 from unicodedata import normalize as normalize_unicode
+from warnings import warn
 
 from pdfminer.converter import PDFPageAggregator
 from pdfminer.layout import (
@@ -306,7 +307,12 @@ class Page(Container):
                     try:
                         extras[k] = v.decode("utf-8")
                     except UnicodeDecodeError:
-                        extras[k] = v.decode("utf-16")
+                        try:
+                            extras[k] = v.decode("utf-16")
+                        except UnicodeDecodeError:
+                            if not self.pdf.warn_unicode_error:
+                                raise
+                            warn(f"Could not decode {k} for annotation. {k} will be missing.")
 
             parsed = {
                 "page_number": self.page_number,
