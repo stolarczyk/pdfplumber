@@ -1,4 +1,5 @@
 from typing import Any, List, Optional, Union
+from warnings import warn
 
 from pdfminer.pdftypes import PDFObjRef
 from pdfminer.psparser import PSLiteral
@@ -68,8 +69,10 @@ def resolve_all(x: Any) -> Any:
     if isinstance(x, PDFObjRef):
         resolved = x.resolve()
 
-        # Avoid infinite recursion
-        if get_dict_type(resolved) == "Page":
+        # Avoid infinite recursion - inclusing signatures here
+        if get_dict_type(resolved) in ["Page", "Sig"]:
+            # included Sig to avoid recursion error on annotations with signatures create in DocuSign
+            # see this issue for more details: https://github.com/jsvine/pdfplumber/issues/638#issuecomment-1218299639
             return x
 
         return resolve_all(resolved)
