@@ -73,7 +73,7 @@ def resolve_all(x: Any) -> Any:
         if get_dict_type(resolved) in ["Page", "Sig"]:
             # included Sig to avoid recursion error on annotations with signatures create in DocuSign
             # see this issue for more details: https://github.com/jsvine/pdfplumber/issues/638#issuecomment-1218299639
-            return x
+            return x.resolve()
 
         return resolve_all(resolved)
     elif isinstance(x, (list, tuple)):

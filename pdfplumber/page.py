@@ -290,6 +290,10 @@ class Page(Container):
             return pt
 
         def parse(annot: T_obj) -> T_obj:
+            # annot sometimes is a string, which should not be the case
+            # check if dict and raise error otherwise, to be handled by the caller
+            if not isinstance(annot, dict):
+                raise TypeError(f"annot should be a dict, not {type(annot)}")
             _a, _b, _c, _d = annot["Rect"]
             pt0 = rotate_point((_a, _b), self.rotation)
             pt1 = rotate_point((_c, _d), self.rotation)
@@ -336,7 +340,14 @@ class Page(Container):
             return parsed
 
         raw = resolve_all(self.page_obj.annots) or []
-        parsed = list(map(parse, raw))
+        # parsed = list(map(parse, raw))
+        parsed = []
+        for r in raw:
+            # use for loop instead of map (see above) to catch exceptions
+            try:
+                parsed.append(parse(r))
+            except TypeError as e:
+                warn(f"Could not parse annotation. Annotation will be missing. {e}")
         if isinstance(self, CroppedPage):
             return self._crop_fn(parsed)
         else:
