@@ -310,7 +310,7 @@ class Page(Container):
                         try:
                             extras[k] = v.decode("utf-16")
                         except UnicodeDecodeError:
-                            if not self.pdf.warn_unicode_error:
+                            if self.pdf.raise_unicode_errors:
                                 raise
                             warn(f"Could not decode {k} for annotation. {k} will be missing.")
 
