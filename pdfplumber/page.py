@@ -312,7 +312,10 @@ class Page(Container):
                         except UnicodeDecodeError:
                             if self.pdf.raise_unicode_errors:
                                 raise
-                            warn(f"Could not decode {k} for annotation. {k} will be missing.")
+                            warn(
+                                f"Could not decode {k} for annotation."
+                                " {k} will be missing."
+                            )
 
             parsed = {
                 "page_number": self.page_number,
