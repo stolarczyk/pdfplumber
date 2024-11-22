@@ -313,8 +313,8 @@ class Page(Container):
                             if self.pdf.raise_unicode_errors:
                                 raise
                             warn(
-                                f"Could not decode {k} for annotation."
-                                " {k} will be missing."
+                                f"Could not decode {k} of annotation."
+                                f" {k} will be missing."
                             )
 
             parsed = {
