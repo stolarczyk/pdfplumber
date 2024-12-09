@@ -337,13 +337,15 @@ class Test(unittest.TestCase):
 
     def test_pr_1195(self):
         """
-        In certain scenarios, annotations may include invalid or extraneous data that can
-        obstruct the annotation processing workflow.
-        To mitigate this, the raise_unicode_errors parameter in the PDF initializer
-        and the .open() method provides a configurable option to bypass these errors and
-        generate warnings instead, ensuring smoother handling of such anomalies.
+        In certain scenarios, annotations may include invalid or extraneous
+        data that can obstruct the annotation processing workflow.  To mitigate
+        this, the raise_unicode_errors parameter in the PDF initializer and the
+        .open() method provides a configurable option to bypass these errors
+        and generate warnings instead, ensuring smoother handling of such
+        anomalies.
 
-        The following tests verifies the functionality of the raise_unicode_errors parameter.
+        The following tests verifies the functionality of the
+        raise_unicode_errors parameter.
         """
         path = os.path.join(HERE, "pdfs/annotations-unicode-issues.pdf")
         with pdfplumber.open(path) as pdf, pytest.raises(UnicodeDecodeError):
